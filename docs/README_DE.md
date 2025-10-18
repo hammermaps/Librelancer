@@ -68,6 +68,8 @@ Detaillierte Anweisungen zum Bauen aus dem Quellcode finden Sie in [INSTALLATION
 
 ## Dokumentation
 
+📖 **[Vollständige Dokumentations-Übersicht](DOKUMENTATION_ÜBERSICHT.md)** - Navigationshilfe für alle Dokumentations-Ressourcen
+
 Die Librelancer-Dokumentation ist in mehrere Bereiche unterteilt:
 
 ### Für Benutzer
