@@ -9,6 +9,27 @@ Support Librelancer on Patreon: https://www.patreon.com/librelancer
 
 Download compiled binaries from https://librelancer.net/downloads.html
 
+## Documentation
+
+### 📖 Deutsche Dokumentation (German Documentation)
+
+Umfassende deutsche Dokumentation ist verfügbar:
+- **[Hauptdokumentation](docs/README_DE.md)** - Übersicht und Einstieg
+- **[Installationsanleitung](docs/INSTALLATION_DE.md)** - Detaillierte Installationsschritte
+- **[Benutzerhandbuch](docs/BENUTZERHANDBUCH.md)** - Anleitung für Benutzer
+- **[Entwicklerhandbuch](docs/ENTWICKLERHANDBUCH.md)** - Für Entwickler
+- **[Architektur](docs/ARCHITEKTUR.md)** - Technische Architektur-Übersicht
+- **[FAQ](docs/FAQ_DE.md)** - Häufig gestellte Fragen
+- **[Beitragen](docs/BEITRAGEN.md)** - Richtlinien für Beiträge
+- **[CI/CD](docs/JENKINS_ANLEITUNG.md)** - Jenkins-Setup (Deutsch)
+
+### English Documentation
+
+- [LancerEdit Documentation](docs/index.md)
+- [Scripts](docs/scripts.md)
+- [Model Importer](docs/model-importer.md)
+- [Development & Optimization](docs/README_OPTIMIZATION_DOCS.md)
+
 ## General Requirements
 * GPU must be capable of OpenGL 3.1+
 * A Freelancer installation (Vanilla recommended, some mods may work)
