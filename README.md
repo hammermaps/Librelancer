@@ -108,8 +108,12 @@ You need to either uninstall the 32-bit dotnet SDK (recommended), or modify your
 * openal-soft
 * gcc and g++
 * CMake 3.15+
-* GTK3 headers (will contain freetype etc.)
+* GTK3 headers (libgtk-3-dev) - includes freetype, fontconfig, harfbuzz
 
+On Ubuntu/Debian, install build dependencies with:
+```bash
+sudo apt-get install build-essential cmake libgtk-3-dev libsdl2-dev libopenal-dev
+```
 
 **Steps:**
 
