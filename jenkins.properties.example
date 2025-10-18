@@ -1,0 +1,61 @@
+# Jenkins Build Configuration Example
+# Copy this file to jenkins.properties and customize as needed
+# This file should not be committed to version control
+
+# Build Configuration
+# Parallel jobs for native build (default: auto-detect CPU cores)
+# BUILD_PARALLEL_JOBS=4
+
+# Build Type (Release or Debug)
+# BUILD_TYPE=Release
+
+# Version Override (optional)
+# BUILD_VERSION=1.0.0
+
+# Platform-Specific Options (Linux only)
+# Build Windows 64-bit binaries on Linux (requires mingw)
+# BUILD_WIN64=true
+
+# Build Windows 32-bit binaries on Linux (requires mingw)
+# BUILD_WIN32=false
+
+# Notification Settings
+# Email addresses for build notifications (comma-separated)
+# NOTIFICATION_EMAILS=dev@example.com,team@example.com
+
+# Slack webhook for notifications (optional)
+# SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+
+# Artifact Storage
+# Custom path for build artifacts (default: workspace/bin)
+# ARTIFACT_PATH=/var/jenkins/artifacts
+
+# Archive old builds (days to keep)
+# ARCHIVE_DAYS=30
+
+# Test Configuration
+# Skip tests (not recommended for CI)
+# SKIP_TESTS=false
+
+# Test timeout in minutes
+# TEST_TIMEOUT=30
+
+# Advanced Options
+# Custom CMake flags
+# CMAKE_FLAGS=-DCUSTOM_FLAG=ON
+
+# Custom MSBuild flags (Windows)
+# MSBUILD_FLAGS=/p:Configuration=Release
+
+# DotNet restore source (optional)
+# DOTNET_SOURCE=https://api.nuget.org/v3/index.json
+
+# Environment Variables
+# Set custom environment variables for the build
+# CUSTOM_ENV_VAR=value
+
+# Notes:
+# - This file uses standard Java properties format
+# - Lines starting with # are comments
+# - To use these properties in your build, load them in a Jenkinsfile
+# - Keep sensitive data (credentials, tokens) in Jenkins credentials store

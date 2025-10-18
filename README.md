@@ -17,6 +17,14 @@ Download compiled binaries from https://librelancer.net/downloads.html
 
 Note for developers: .\build.ps1 or build.sh _must_ be ran before opening the .sln file, as it generates required files for the solution.
 
+### Continuous Integration
+
+For automated builds and testing, Jenkins configuration files are provided:
+- See [docs/JENKINS_ANLEITUNG.md](docs/JENKINS_ANLEITUNG.md) for detailed German documentation
+- See [docs/JENKINS_SCHNELLSTART.md](docs/JENKINS_SCHNELLSTART.md) for quick start guide (German)
+- Use `Jenkinsfile` for full parallel builds on Linux and Windows
+- Use `Jenkinsfile.simple` for basic single-agent builds
+
 ### Windows
 **Prerequisites:**
 
