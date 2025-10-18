@@ -9,6 +9,30 @@ Support Librelancer on Patreon: https://www.patreon.com/librelancer
 
 Download compiled binaries from https://librelancer.net/downloads.html
 
+## Über das Projekt (About the Project - German)
+
+Librelancer ist eine vollständige Neuimplementierung des klassischen Weltraum-Spiels Freelancer von 2003. Das Projekt zielt darauf ab, das ursprüngliche Spielerlebnis auf modernen Systemen zu bewahren und gleichzeitig die Vorteile aktueller Technologien zu nutzen.
+
+**Projektstatus:**
+- ✅ Läuft auf Windows und Linux
+- 🔄 macOS-Support in Entwicklung (Betreuer gesucht)
+- 🎮 Aktive Entwicklung und Community
+
+**Hauptmerkmale:**
+- Geschrieben in C# mit OpenGL für moderne Hardware-Unterstützung
+- Open-Source und kostenlos verfügbar
+- Kompatibel mit originalen Freelancer-Installationen
+- Erweiterbare Architektur für Modding
+- Plattformübergreifende Unterstützung
+
+**Community & Unterstützung:**
+- Discord-Server für Diskussionen und Hilfe
+- Aktive Entwickler-Community
+- Pull Requests sind willkommen!
+- Patreon-Unterstützung verfügbar für Projektentwicklung
+
+Für detaillierte Informationen in deutscher Sprache, siehe die [Deutsche Dokumentation](#-deutsche-dokumentation-german-documentation) unten.
+
 ## Documentation
 
 ### 📖 Deutsche Dokumentation (German Documentation)
