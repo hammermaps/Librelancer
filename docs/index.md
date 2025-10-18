@@ -15,3 +15,10 @@ Welcome to the documentation for LancerEdit $(VERSION).
 
 - [Librelancer Scripts](scripts.md)
 - [Script API Reference](api/reference.md)
+
+### Development & Optimization
+
+- [Code Analysis & Optimizations](CODE_ANALYSIS_OPTIMIZATIONS.md) - Comprehensive analysis and recommendations
+- [Quick Optimization Guide](QUICK_OPTIMIZATION_GUIDE.md) - Actionable quick wins
+- [Implementation Examples](IMPLEMENTATION_EXAMPLES.md) - Production-ready code samples
+- [Optimization Docs Overview](README_OPTIMIZATION_DOCS.md) - Documentation navigation guide
