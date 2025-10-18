@@ -45,7 +45,7 @@ namespace LibreLancer.Render
                 spinZ += elapsed * Spin.Z;
                 if (spinZ > (2 * Math.PI)) spinZ -= 2 * Math.PI;
             }
-            if (NebulaVersion != sysr.ZoneVersion || pos != position && sysr != null)
+            if (NebulaVersion != sysr.ZoneVersion || pos != position)
 			{
 				pos = position;
 				Nebula = sysr.ObjectInNebula(position);
@@ -113,7 +113,7 @@ namespace LibreLancer.Render
                      Matrix4x4.CreateRotationZ((float)spinZ)) * World;
             }
             this.sysr = sys;
-			if (sys.DrawNebulae && Nebula != null && nr != Nebula || (forceCull && InheritCull))
+			if ((sys.DrawNebulae && Nebula != null && nr != Nebula) || (forceCull && InheritCull))
 			{
                 return false;
 			}
