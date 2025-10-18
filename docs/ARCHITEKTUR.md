@@ -221,7 +221,7 @@ Scripting-Engine für Cutscenes und Events:
 - **Interop**: C#-Objekte in Scripts nutzen
 
 **Script-Beispiel**:
-```thorn
+```javascript
 // Thorn Script
 entity player = GetPlayer()
 entity ship = GetShip(player)
