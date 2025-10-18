@@ -1,0 +1,78 @@
+// Simplified Jenkinsfile for basic builds
+// This can be used for quick testing or simpler setups
+
+pipeline {
+    agent any
+    
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timestamps()
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out repository...'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: scm.branches,
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [
+                        [$class: 'SubmoduleOption',
+                         disableSubmodules: false,
+                         parentCredentials: true,
+                         recursiveSubmodules: true,
+                         reference: '',
+                         trackingSubmodules: false]
+                    ],
+                    submoduleCfg: [],
+                    userRemoteConfigs: scm.userRemoteConfigs
+                ])
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        echo 'Building on Linux...'
+                        sh '''
+                            chmod +x build.sh
+                            ./build.sh BuildAll
+                        '''
+                    } else {
+                        echo 'Building on Windows...'
+                        powershell '.\\build.ps1 BuildAll'
+                    }
+                }
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        echo 'Running tests on Linux...'
+                        sh './build.sh Test'
+                    } else {
+                        echo 'Running tests on Windows...'
+                        powershell '.\\build.ps1 Test'
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Build completed successfully!'
+            archiveArtifacts artifacts: 'bin/**/*', fingerprint: true, allowEmptyArchive: true
+        }
+        failure {
+            echo 'Build failed!'
+        }
+        always {
+            cleanWs()
+        }
+    }
+}
