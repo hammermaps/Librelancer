@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsheenbidi.a CMakeFiles/sheenbidi.dir/deps/SheenBidi/Source/SheenBidi.c.o
+/usr/bin/ranlib libsheenbidi.a
