@@ -188,15 +188,15 @@ namespace LancerEdit
             layout = new VerticalTabLayout(DrawLeft, _ => { }, DrawMiddle);
 
             if(drawable is CmpFile || drawable is ModelFile)
-                layout.TabsLeft.Add(new($"{Icons.Tree} Hierarchy", 0));
+                layout.TabsLeft.Add(new(Icons.Tree,"Hierarchy", 0));
             if (drawable is CmpFile)
-                layout.TabsLeft.Add(new($"{Icons.PersonRunning} Animations", 1));
+                layout.TabsLeft.Add(new(Icons.PersonRunning, "Animations", 1));
             if (drawable is DF.DfmFile)
-                layout.TabsLeft.Add(new($"{Icons.Bone} Skeleton", 2));
-            layout.TabsLeft.Add(new($"{Icons.Paintbrush} Render", 3));
+                layout.TabsLeft.Add(new(Icons.Bone, "Skeleton", 2));
+            layout.TabsLeft.Add(new(Icons.Paintbrush,"Render", 3));
             if(drawable is CmpFile || drawable is ModelFile)
-                layout.TabsLeft.Add(new($"{Icons.FileExport} Export", 4));
-            layout.TabsLeft.Add(new($"{Icons.Cog} Presets", 5));
+                layout.TabsLeft.Add(new(Icons.FileExport, "Export", 4));
+            layout.TabsLeft.Add(new(Icons.Cog, "Presets", 5));
         }
 
         void DrawLeft(int tag)
@@ -226,6 +226,12 @@ namespace LancerEdit
 
         void DrawMiddle()
         {
+            var beforePos = ImGui.GetCursorPos();
+            DoViewport();
+            var afterPos = ImGui.GetCursorPos();
+            // Top toolbar
+            var framePadding = ImGui.GetStyle().FramePadding;
+            ImGui.SetCursorPos(beforePos + framePadding);
             var warnings = GetBrokenTextures();
             if (warnings.Length > 0)
             {
@@ -243,7 +249,8 @@ namespace LancerEdit
                 ct.CheckItem("Bounds", ref doBounds);
                 ct.CheckItem("Normals", ref drawNormals);
             }
-            DoViewport();
+            var yPos = ImGui.GetFrameHeightWithSpacing();
+            ImGui.SetCursorPos(afterPos + new Vector2(framePadding.X, -yPos - framePadding.Y));
             //
             var camModes = (cameraPart != null) ? camModesCockpit : camModesNormal;
             ImGuiExt.DropdownButton("Camera Mode", ref selectedCam, camModes);
@@ -389,7 +396,7 @@ namespace LancerEdit
             popups.Run();
             HardpointEditor();
             PartEditor();
-            layout.Draw();
+            layout.Draw((VerticalTabStyle)_window.Config.TabStyle);
         }
 
         float viewButtonsWidth = 100;

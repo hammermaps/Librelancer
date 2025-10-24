@@ -34,6 +34,8 @@ namespace LancerEdit
     [ParsedSection]
     public partial class EditorConfiguration : IRendererSettings
     {
+        [Entry("tab_style")]
+        public int TabStyle;
         [Entry("msaa")]
         public int MSAA;
         [Entry("texture_filter")]
@@ -66,6 +68,8 @@ namespace LancerEdit
         public bool LogVisible;
         [Entry("files_visible")]
         public bool FilesVisible;
+        [Entry("status_bar_visible")]
+        public bool StatusBarVisible = true;
         [Entry("collada_visible")]
         public bool ColladaVisible;
         [Entry("update_channel")]
@@ -135,6 +139,7 @@ namespace LancerEdit
                 return;
             var b = new IniBuilder();
             var c = b.Section("Config")
+                .Entry("tab_style", TabStyle)
                 .Entry("msaa", MSAA)
                 .Entry("texture_filter", TextureFilter)
                 .Entry("view_buttons", ViewButtons)
@@ -153,6 +158,7 @@ namespace LancerEdit
                 .Entry("lod_multiplier", LodMultiplier)
                 .Entry("log_visible", LogVisible)
                 .Entry("files_visible", FilesVisible)
+                .Entry("status_bar_visible", StatusBarVisible)
                 .Entry("collada_visible", ColladaVisible);
             foreach (var fav in Favorites)
                 c.Entry("favorite", Encode(fav.Name), Encode(fav.FullPath));
