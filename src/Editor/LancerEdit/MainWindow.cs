@@ -19,6 +19,7 @@ using LancerEdit.GameContent;
 using LancerEdit.GameContent.MissionEditor;
 using LancerEdit.Shaders;
 using LancerEdit.Updater;
+using LibreLancer.ContentEdit.Model;
 using LibreLancer.Data.Ini;
 using LibreLancer.Data.Pilots;
 using LibreLancer.Dialogs;
@@ -258,6 +259,8 @@ namespace LancerEdit
             }
         }
 
+        private string GetDataPath() => OpenDataContext is not null ? OpenDataContext.Folder : Config.AutoLoadPath;
+
 
         bool openAbout = false;
         public TabControl TabControl = new TabControl();
@@ -407,39 +410,32 @@ namespace LancerEdit
             var popup = new TaskRunPopup("Loading Model");
             popup.Log($"Loading {filename}\n");
             Popups.OpenPopup(popup);
-            async void Action()
-            {
-                EditResult<SimpleMesh.Model> model = null;
-                if (Blender.FileIsBlender(filename))
+            SimpleMeshLoader.ModelFromFile(filename, Config.BlenderPath, popup.Token, popup.Log)
+                .ContinueWith(x =>
                 {
-                    model = await Blender.LoadBlenderFile(filename, popup.Token, popup.Log, Config.BlenderPath);
-                }
-                else
-                {
-                    model = await EditResult<SimpleMesh.Model>.RunBackground(() =>
+                    if (x.Exception != null)
                     {
-                        using var stream = File.OpenRead(filename);
-                        return EditResult<SimpleMesh.Model>.TryCatch(() => SimpleMesh.Model.FromStream(stream));
-                    }, popup.Token);
-                }
-                ResultMessages(model, popup.Log);
-                if (model.IsSuccess)
-                {
-                    popup.Log("Loaded\n");
-                    var mdl = model.Data.AutoselectRoot(out _).ApplyScale();
-                    var x = Vector3.Transform(Vector3.Zero, mdl.Roots[0].Transform);
-                    bool modelWarning = x.Length() > 0.0001;
-                    mdl = mdl.ApplyRootTransforms(false).CalculateBounds();
-                    QueueUIThread(() => FinishImporterLoad(mdl, modelWarning, Path.GetFileName(filename), popup));
-                }
-                else
-                {
-                    popup.Log("Opening model file failed\n");
-                    popup.Finish();
-                }
-
-            }
-            Task.Run(Action);
+                        popup.Log(x.Exception + "\n");
+                        popup.Log("Opening model file failed\n");
+                        popup.Finish();
+                        return;
+                    }
+                    QueueUIThread(() =>
+                    {
+                        var model = x.Result;
+                        ResultMessages(model, popup.Log);
+                        if (model.IsSuccess)
+                        {
+                            popup.Log("Loaded\n");
+                            QueueUIThread(() => FinishImporterLoad(model.Data, Path.GetFileName(filename), popup));
+                        }
+                        else
+                        {
+                            popup.Log("Opening model file failed\n");
+                            popup.Finish();
+                        }
+                    });
+                });
         }
 
         void OpenGameData()
@@ -551,9 +547,10 @@ namespace LancerEdit
 					var t = new UtfTab(this, new EditableUtf(), "Untitled");
                     AddTab(t);
 				}
+
                 if (Theme.IconMenuItem(Icons.Open, "Open", true))
 				{
-                    FileDialog.Open(OpenFile, AppFilters.UtfFilters + AppFilters.ThnFilters);
+                    FileDialog.Open(OpenFile, AppFilters.UtfFilters + AppFilters.ThnFilters, GetDataPath());
                 }
 
                 recentFiles.Menu(Popups);
@@ -641,7 +638,7 @@ namespace LancerEdit
                     FileDialog.Open(x =>
                     {
                         AddTab(new MissionScriptEditorTab(OpenDataContext, this, x));
-                    }, AppFilters.IniFilters);
+                    }, AppFilters.IniFilters, GetDataPath());
                 }
                 ImGui.EndMenu();
             }
@@ -661,7 +658,7 @@ namespace LancerEdit
                     var filters = Blender.BlenderPathValid(Config.BlenderPath)
                         ? AppFilters.ImportModelFilters
                         : AppFilters.ImportModelFiltersNoBlender;
-                    FileDialog.Open(TryImportModel, filters);
+                    FileDialog.Open(TryImportModel, filters, GetDataPath());
                 }
                 if (Theme.IconMenuItem(Icons.SyncAlt, "Convert Audio", EnableAudioConversion))
                 {
@@ -669,14 +666,14 @@ namespace LancerEdit
                 }
                 if (Theme.IconMenuItem(Icons.SprayCan, "Generate Icon", true))
                 {
-                    FileDialog.Open(input => Make3dbDlg.Open(input), AppFilters.ImageFilter);
+                    FileDialog.Open(input => Make3dbDlg.Open(input), AppFilters.ImageFilter, GetDataPath());
                 }
                 if (Theme.IconMenuItem(Icons.Table, "State Graph", true))
                 {
                     FileDialog.Open(
                         input => AddTab(new StateGraphTab(this, new StateGraphDb(input, null), input)),
                         AppFilters.StateGraphFilter
-                        );
+                        , GetDataPath());
                 }
 
                 if (Theme.IconMenuItem(Icons.BezierCurve, "ParamCurve Visualiser", true))
@@ -827,7 +824,8 @@ namespace LancerEdit
                               ImGuiWindowFlags.NoMove |
                               ImGuiWindowFlags.NoResize |
                               ImGuiWindowFlags.NoBackground |
-                              ImGuiWindowFlags.NoDecoration);
+                              ImGuiWindowFlags.NoDecoration |
+                              ImGuiWindowFlags.NoScrollWithMouse);
 
             TabControl.TabLabels();
             var totalH = ImGui.GetWindowHeight();
@@ -989,20 +987,9 @@ namespace LancerEdit
             ImGui.SameLine(Math.Max((win / 2f) - (txt / 2f),0));
             ImGui.Text(text);
         }
-        void FinishImporterLoad(SimpleMesh.Model model, bool warnOffCenter, string tabName, TaskRunPopup popup)
+        void FinishImporterLoad(SimpleMesh.Model model, string tabName, TaskRunPopup popup)
         {
-           if (warnOffCenter)
-           {
-               popup.Confirm("Model root is off-center, consider re-exporting.\n\nImport anyway?", () =>
-               {
-                   AddTab(new ImportModelTab(model, tabName, this, popup));
-               });
-           }
-           else
-           {
-               AddTab(new ImportModelTab(model, tabName, this, popup));
-           }
-
+            AddTab(new ImportModelTab(model, tabName, this, popup));
         }
 
         public void ResultMessages<T>(EditResult<T> result, Action<string> logMessages)
